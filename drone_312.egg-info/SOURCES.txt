@@ -1,7 +1,0 @@
-LICENSE
-README.md
-setup.py
-drone_312.egg-info/PKG-INFO
-drone_312.egg-info/SOURCES.txt
-drone_312.egg-info/dependency_links.txt
-drone_312.egg-info/top_level.txt
