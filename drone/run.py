@@ -6,11 +6,11 @@ a quad rotor drone based on the model and its parameters.
 import sys
 import argparse
 from pathlib import Path
-from drone.studies.simulation import (
-
+from drone.studies.simulation.study import (
+    NonSymmetricQuadrotor
 )
-from drone.studies.design import (
-
+from drone.studies.design.study import (
+    PIDController
 )
 from drone.utils import loaders
 from drone.utils import plotters
