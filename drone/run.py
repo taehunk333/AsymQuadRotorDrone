@@ -26,7 +26,7 @@ def get_config_path() -> Path:
         sys.exit(1)
 
     parser = argparse.ArgumentParser(
-        description="Process Simulation or Parameter Estimation."
+        description="Dynamic Simulation or Drone Design."
     )
 
     parser.add_argument(

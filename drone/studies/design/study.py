@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from drone.studies.simulation.study import NonSymmetricQuadrotor
+
 # PID controller for altitude + attitude hover
 class PIDController:
     def __init__(self):
