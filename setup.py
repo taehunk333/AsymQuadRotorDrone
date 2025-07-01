@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = "aqrdrone_312",
+    name = "drone_312",
     version = "0.0.1",
     packages = find_packages(),
     description = "A Python package for simulating the dynamics of an asymmetric quad rotor drone and designing it.",
