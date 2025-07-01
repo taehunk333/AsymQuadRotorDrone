@@ -15,7 +15,6 @@ from drone.studies.design import (
 from drone.utils import loaders
 from drone.utils import plotters
 from drone.utils import timers
-from drone.utils import printers
 
 def get_config_path() -> Path:
     """

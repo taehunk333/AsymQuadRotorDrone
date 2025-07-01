@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: drone_312
+Version: 0.0.1
+Summary: A Python package for simulating the dynamics of an asymmetric quad rotor drone and designing it.
+Author: Taehun Kim
+Maintainer-email: tk6at@virginia.edu
+Requires-Python: >=3.12
+License-File: LICENSE
+Dynamic: author
+Dynamic: license-file
+Dynamic: maintainer-email
+Dynamic: requires-python
+Dynamic: summary

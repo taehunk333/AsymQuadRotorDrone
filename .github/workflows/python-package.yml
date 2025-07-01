@@ -1,0 +1,71 @@
+name: Python CI/CD with Mamba and Caching
+
+on:
+  push:
+    branches: [ "**" ]  # Run on all branches for push
+  pull_request:
+    branches: [ "**" ]  # Run on all branches for pull requests
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Set up Miniconda
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        python-version: "3.11"
+        auto-update-conda: true
+
+    # Step 3: Install Mamba
+    - name: Install Mamba
+      run: conda install -n base -c conda-forge mamba
+
+    # Step 4: Cache Mamba Environment
+    - name: Cache Mamba environment
+      uses: actions/cache@v3
+      with:
+        path: ~/.conda/envs/pypetal
+        key: ${{ runner.os }}-mamba-${{ hashFiles('environment.yml') }}
+        restore-keys: |
+          ${{ runner.os }}-mamba-
+      continue-on-error: true
+
+    # Step 5: Debug Cache Information
+    - name: Debug Cache Information
+      run: |
+        echo "Cache key: ${{ runner.os }}-mamba-${{ hashFiles('environment.yml') }}"
+        echo "Cache restore-keys: ${{ runner.os }}-mamba-"
+
+    # Step 6: Create or Update Environment
+    - name: Create or Update Environment with Mamba
+      run: |
+        if [ ! -d ~/.conda/envs/pypetal ]; then
+          mamba env create -f environment.yml --name drone_312
+        else
+          mamba env update -f environment.yml --name drone_312
+        fi
+
+    # Step 6: Verify environment
+    - name: Verify environment
+      run: mamba run -n drone_312 mamba list
+
+    # Step 7: Install the project in editable mode
+    - name: Install the project in editable mode
+      run: mamba run -n drone_312 pip install -e .
+      
+    # Step 8: Lint with flake8
+    - name: Lint with flake8
+      run: mamba run -n drone_312 flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Lint with flake8 (continue)
+      run: mamba run -n drone_312 flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    # Step 9: Test with pytest
+    - name: Test with pytest
+      run: mamba run -n drone_312 pytest
+
