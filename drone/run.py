@@ -76,7 +76,7 @@ def get_simulation_study(
         log_path = None
         warning = False
 
-    study = ProcessSimulation(
+    study = NonSymmetricQuadrotor(
         config=config,
         warning=warning,
         log_path=log_path
@@ -97,35 +97,17 @@ def run_simulation(
 
     return study.__execute__()
 
-def get_estimation_study(
+def get_design_study(
     config:dict
 ):
     """
-    Get the estimation study.
+    Get the design study.
     """
 
-    log_path \
-        = loaders.get_log_file_path(
-            file_name='parameter_estimation.log',
-            config=config
-        )
-
-    gradient_based \
-        = optimizers.get_gradient_based(
-            config=config
-        )
-
-    if gradient_based:
-        study = GradientBasedParameterEstimation(
-            config=config,
-            log_path=log_path
-        )
-
-    else:
-        study = DirectSearchParameterEstimation(
-            config=config,
-            log_path=log_path
-        )
+    study = PIDController(
+        config=config,
+        log_path=log_path
+    )
 
     return study
 
@@ -136,7 +118,7 @@ def run_estimation(
     Run a model parameter estimation workflow.
     """
 
-    study = get_estimation_study(
+    study = get_design_study(
         config=config
     )
 
@@ -161,39 +143,6 @@ def main(
                 config=config
             )
 
-        if results is None:
-            log_path = loaders.get_log_file_path(
-                file_name='simulation.log',
-                config=config
-            )
-
-            msg = "Simulation failed. Please check the log file. \n"
-
-            printers.no_print_but_log(
-                log_path=log_path,
-                msg=msg
-            )
-
-            msg = ""
-
-            for key, value in flags.items():
-                issue = f"{key}: {value}"
-                msg = msg + " " + issue + " \n"
-
-            printers.no_print_but_log(
-                log_path=log_path,
-                msg=msg
-            )
-
-            sys.exit(1)
-
-        plotters.plot_simulation_results(
-            results=results,
-            data=data,
-            compute_times=compute_times,
-            config=config
-        )
-
     elif workflow == 'estimation':
         loaders.create_directory_with_config(
             config=config
@@ -203,12 +152,6 @@ def main(
             = run_estimation(
                 config=config
             )
-
-        plotters.plot_and_save_estimation_results(
-            results=results,
-            compute_times=compute_times,
-            config=config
-        )
 
     else:
         print("Please select a workflow: simulation or estimation.")
