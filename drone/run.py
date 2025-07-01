@@ -104,10 +104,7 @@ def get_design_study(
     Get the design study.
     """
 
-    study = PIDController(
-        config=config,
-        log_path=log_path
-    )
+    study = PIDController()
 
     return study
 
