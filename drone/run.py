@@ -76,11 +76,7 @@ def get_simulation_study(
         log_path = None
         warning = False
 
-    study = NonSymmetricQuadrotor(
-        config=config,
-        warning=warning,
-        log_path=log_path
-    )
+    study = NonSymmetricQuadrotor()
 
     return study
 
